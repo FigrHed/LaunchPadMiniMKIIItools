@@ -57,8 +57,8 @@ class Explosion:
         for t in range(5):
             for x in range(9):
                 for y in range(9):
-                    print("x",x,"x-5:",abs(x-5),"t:",t)
-                    if abs(x - 4) == t or abs(y - 4) == t:
+                    print("x",x,"x-4:",abs(x-4),"t:",t)
+                    if abs(x - 4) == t and abs(y - 4) <= t or abs(x - 4) <= t and abs(y - 4) == t:
                         print("ye")
                         note = ((x+1)*10) + (y+1)
                         msg = mido.Message('note_on',note= note, velocity=self.colour)
@@ -74,7 +74,7 @@ class Explosion:
         self.colour = random.choice(colours)
         for i in range(self.width):
             for j in range(self.height):
-                if (i+j)%2 is 0:
+                if (i+j)%2 == 0:
                     note = ((i+1)*10)+j+1
                     msg = mido.Message('note_on', note = note, velocity = self.colour)
                     port.send(msg)
@@ -86,7 +86,7 @@ class Explosion:
         self.colour = random.choice(colours)
         for i in range(self.width):
             for j in range(self.height):
-                if (i+j)%factor is 0:
+                if (i+j)%factor == 0:
                     note = ((i+1)*10)+j+1
                     msg = mido.Message('note_on', note = note, velocity = self.colour)
                     port.send(msg)
@@ -109,7 +109,7 @@ class Explosion:
         self.colour = random.choice(colours)
         for i in range(self.width):
             for j in range(self.height):
-                if (i+j)%2 is 0:
+                if (i+j)%2 == 0:
                     note = ((i+1)*10)+j+1
                     msg = mido.Message('note_on', note = note, velocity = self.colour)
                     port.send(msg)
@@ -151,17 +151,22 @@ class Explosion:
 
 if __name__ == "__main__":
     # port = mido.open_output('Launchpad Mini MK3 LPMiniMK3 MIDI In')
-    port = mido.open_output('to Max 1')
-    print(mido.get_output_names())
+    # port = mido.open_output('to Max 1')
+    port = mido.open_output("Network Wifi-MIDI")
+    # print(mido.get_output_names())
     
     snake1 = Snake(port)
     expl = Explosion(port)
-    snake1.makeSnake()
+
+    expl.all_off()
+
+
+    # snake1.makeSnake()
     # expl.makeExplosion()
     for i in range(18):
-        expl.evens(0)
+        # expl.evens(0)
         # expl.odds(0)
         # expl.threevens(8, 0)
-        # expl.makeExplosion()
+        expl.makeExplosion()
         # pass
     expl.all_off()
